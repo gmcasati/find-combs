@@ -14,10 +14,10 @@ namespace FindCombsApi.Models
         [BsonElement("RequestDate")]
         public DateTime Date { get; set; }
 
-        public IEnumerable<int> Values { get; set; }
+        public IList<int> Values { get; set; }
 
         public int Key { get; set; }
 
-        public IEnumerable<int> Combination { get; set; }
+        public IList<int> Combination { get; set; }
     }
 }

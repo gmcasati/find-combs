@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FindCombsApi.Services;
-using FindCombsApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
-using FindCombsApi.Repositories;
+using FindCombsApi.Models;
+using FindCombsApi.Application.Interfaces;
+using FindCombsApi.Application.Services;
+using FindCombsApi.Infrastructure.Repositories;
+using FindCombsApi.Infrastructure.Interfaces;
 
 namespace FindCombsApi
 {
@@ -34,10 +36,13 @@ namespace FindCombsApi
             services.AddSingleton<ICombinationsDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<CombinationsDatabaseSettings>>().Value);
             
-            services.AddSingleton<RequestRepository>();
+            //services.AddSingleton<RequestRepository>();
             
-            services.AddSingleton<CombinationService>();
-
+            //services.AddSingleton<CombinationService>();
+            services.AddScoped<ICombinationService, CombinationService>();
+            services.AddScoped<IRequestService, RequestService>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
+            
             services.AddControllers();
         }
 

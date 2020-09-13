@@ -1,21 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FindCombsApi.Extensions;
-using FindCombsApi.Repositories;
+using FindCombsApi.Application.Interfaces;
+using FindCombsApi.Commons.Extensions;
 
-namespace FindCombsApi.Services
+namespace FindCombsApi.Application.Services
 {
-    public class CombinationService
+    public class CombinationService : ICombinationService
     {
-        private readonly RequestRepository _requestRepository;
-        public CombinationService(RequestRepository requestRepository)
+        public IList<int> FindFirstCombsWithReps(IList<int> values, int key)
         {
-            _requestRepository = requestRepository;
-        }
-        public IEnumerable<int> FindFirst(IEnumerable<int> values, int key)
-        {
-            IEnumerable<int> winners = null;
+            IList<int> combMatcher = new List<int>();
             int[] valuesArray = values.ToArray();
             for (int degree = 2; degree <= valuesArray.Length; degree++)
             {
@@ -33,7 +28,7 @@ namespace FindCombsApi.Services
 
                 if (stop_1 == true)
                 {
-                    winners = new List<int>(sol);
+                    combMatcher = new List<int>(sol);
                     break;
                 }
 
@@ -42,8 +37,8 @@ namespace FindCombsApi.Services
                     break;
                 }
             }
-            _requestRepository.Create(values, key, winners);
-            return winners;
+            
+            return combMatcher;
         }
     }
 }

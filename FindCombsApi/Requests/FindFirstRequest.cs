@@ -7,7 +7,7 @@ namespace FindCombsApi.Requests
     public class FindFirstRequest
     {
         [Required]
-        public List<int> Values { get; set; }
+        public IList<int> Values { get; set; }
         [Required]
         public int Key { get; set; }
     }

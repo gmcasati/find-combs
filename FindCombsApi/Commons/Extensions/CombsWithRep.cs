@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace FindCombsApi.Extensions
+namespace FindCombsApi.Commons.Extensions
 {
     public static class CombsWithRep
     {
