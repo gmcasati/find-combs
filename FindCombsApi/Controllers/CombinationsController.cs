@@ -19,7 +19,6 @@ namespace FindCombsApi.Controllers
             _requestService = requestService;
         }
         [HttpPost]
-        [Route("[action]")]
         public async Task<ActionResult> FindFirst([FromBody] FindFirstRequest request)
         {
             var comb = _combinationService.FindFirstCombsWithReps(request.Values, request.Key);

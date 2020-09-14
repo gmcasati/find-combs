@@ -24,5 +24,13 @@ namespace FindCombsApi.Infrastructure.Repositories
             await _requestsCollection.InsertOneAsync(request);
             return request;
         }
+
+        public async Task<ICollection<Request>> GetRequestsAsync(DateTime start, DateTime end)
+        {
+            var filter = Builders<Request>.Filter.Gte(x => x.Date, start) & Builders<Request>.Filter.Lte(x => x.Date, end); 
+            return await _requestsCollection
+                .Find(filter)
+                .ToListAsync();
+        }
     }
 }

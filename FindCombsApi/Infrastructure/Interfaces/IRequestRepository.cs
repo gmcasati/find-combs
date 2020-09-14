@@ -9,5 +9,6 @@ namespace FindCombsApi.Infrastructure.Interfaces
     public interface IRequestRepository
     {
         Task<Request> Create(IList<int> values, int key, IList<int> sols);
+        Task<ICollection<Request>> GetRequestsAsync(DateTime start, DateTime end);
     }
 }

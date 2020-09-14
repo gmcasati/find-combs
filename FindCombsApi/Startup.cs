@@ -36,13 +36,10 @@ namespace FindCombsApi
             services.AddSingleton<ICombinationsDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<CombinationsDatabaseSettings>>().Value);
             
-            //services.AddSingleton<RequestRepository>();
-            
-            //services.AddSingleton<CombinationService>();
-            services.AddScoped<ICombinationService, CombinationService>();
-            services.AddScoped<IRequestService, RequestService>();
-            services.AddScoped<IRequestRepository, RequestRepository>();
-            
+            services.AddTransient<ICombinationService, CombinationService>();
+            services.AddTransient<IRequestService, RequestService>();
+            services.AddTransient<IRequestRepository, RequestRepository>();
+
             services.AddControllers();
         }
 
