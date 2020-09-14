@@ -15,11 +15,15 @@ using FindCombsApi.Application.Interfaces;
 using FindCombsApi.Application.Services;
 using FindCombsApi.Infrastructure.Repositories;
 using FindCombsApi.Infrastructure.Interfaces;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace FindCombsApi
 {
     public class Startup
     {
+        private static string GetPathOfXmlFromAssembly() => Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,6 +45,12 @@ namespace FindCombsApi
             services.AddTransient<IRequestRepository, RequestRepository>();
 
             services.AddControllers();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Find Combs API with Documentation", Version = "v1" });
+                options.IncludeXmlComments(GetPathOfXmlFromAssembly());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +60,18 @@ namespace FindCombsApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Find Combs API width Documentation V1");
+                // c.RoutePrefix = string.Empty;
+            });
+
+            app.UseDefaultFiles();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 
