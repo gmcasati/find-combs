@@ -17,8 +17,15 @@ namespace FindCombsApi.Controllers
         [HttpGet]
         public async Task<ActionResult> GetRequestsAsync([FromQuery] DateTime start, [FromQuery] DateTime end) 
         {
-            var result = await _requestService.GetRequestsAsync(start, end);
-            return Ok(result);
+            try 
+            {
+                var result = await _requestService.GetRequestsAsync(start, end);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest("Ops! Something wrong happened!");
+            }
         }
     }
 }

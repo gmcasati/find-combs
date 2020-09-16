@@ -21,13 +21,25 @@ namespace FindCombsApi.Controllers
         [HttpPost]
         public async Task<ActionResult> FindFirst([FromBody] FindFirstRequest request)
         {
-            var comb = _combinationService.FindFirstCombsWithReps(request.Values, request.Key);
-            var response = await _requestService.Create(request.Values, request.Key, comb);
-            if (response == null || response.Count() == 0)
+            try
             {
-                return NotFound($"No possible combination in the sequence [{string.Join(", ", request.Values)}] that match key {request.Key}");
+                if(request.Values.Count() == 0) 
+                {
+                    return BadRequest("Empty sequence!");
+                }
+                
+                var comb = _combinationService.FindFirstCombsWithReps(request.Values, request.Key);
+                var response = await _requestService.Create(request.Values, request.Key, comb);
+                if (response == null || response.Count() == 0)
+                {
+                    return NotFound($"No possible combination of elements in the sequence [{string.Join(", ", request.Values)}] that match key {request.Key}");
+                }
+                return Ok(response);
             }
-            return Ok(response);
+            catch
+            {
+                return BadRequest($"Ops! Something wrong happened!");
+            }
         }
     }
 }

@@ -23,8 +23,8 @@ namespace FindCombsApi.Commons.Extensions
             } 
             else 
             {
-                startOut = startIn.ToUniversalTime();
-                endOut = endIn.ToUniversalTime();
+                startOut = startIn;
+                endOut = endIn.AddDays(1);
             }
         }
     }

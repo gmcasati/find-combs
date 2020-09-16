@@ -8,36 +8,33 @@ namespace FindCombsApi.Application.Services
 {
     public class CombinationService : ICombinationService
     {
+        private const int MAX_COMB_DEGREE = 50;
         public IList<int> FindFirstCombsWithReps(IList<int> values, int key)
         {
             IList<int> combMatcher = new List<int>();
             int[] valuesArray = values.ToArray();
-            for (int degree = 2; degree <= valuesArray.Length; degree++)
+            if (CombsWithRep.VerifyValues(valuesArray, key))
             {
-                int pos = 0;
-                int start = 0;
-                int count = 0;
-                bool stop_1 = false;
-                bool stop_2 = true;
-                int[] comb = new int[degree];
-                int[] sol = new int[degree];
-                
-                CombsWithRep.InitComb(comb, degree);
-                CombsWithRep.InitComb(sol, degree);
-                CombsWithRep.FindSingle(pos, valuesArray, comb, valuesArray.Length, degree, start, count, key, sol, ref stop_1, ref stop_2);
-
-                if (stop_1 == true)
+                for (int degree = 1; degree < MAX_COMB_DEGREE; degree++)
                 {
-                    combMatcher = new List<int>(sol);
-                    break;
-                }
+                    int pos = 0;
+                    int start = 0;
+                    int count = 0;
+                    bool stop = false;
+                    int?[] comb = new int?[degree];
+                    int?[] sol = new int?[degree];
 
-                if (stop_2 == true)
-                {
-                    break;
+                    CombsWithRep.InitComb(comb, degree);
+                    CombsWithRep.InitComb(sol, degree);
+                    CombsWithRep.FindSingle(pos, valuesArray, comb, valuesArray.Length, degree, start, count, key, sol, ref stop);
+
+                    if (stop == true)
+                    {
+                        combMatcher = new List<int>(CombsWithRep.ConvertComb(sol, degree));
+                        break;
+                    }
                 }
             }
-            
             return combMatcher;
         }
     }
